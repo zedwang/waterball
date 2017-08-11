@@ -1,0 +1,4 @@
+node_modules/
+generators/app/templates/
+test/tmp/
+coverage/

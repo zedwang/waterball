@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../src/index.js"></script>
+</head>
+<body>
+<div id="container"></div>
+
+
+<script type="text/javascript">
+    var options = {};
+  var wb = new WaterBall(document.getElementById('container'),options);
+    wb.init();
+    var i = 0;
+    setInterval(function () {
+        i += 5;
+        wb.setValue(i);
+    },1500)
+
+
+
+</script>
+</body>
+</html>
