@@ -2,6 +2,10 @@
   "name": "waterball",
     "description": "A Canvas Graph library",
   "version": "0.0.1",
+    "scripts": {
+        "test": "npm test",
+        "build": "npm build"
+    },
     "keywords": ["canvas", "waterball", "wave"],
     "author":{
         "name": "Zed Wang",
@@ -13,6 +17,7 @@
             "url": "http://www.opensource.org/licenses/mit-license.php"
         }
     ],
+    "issues":"https://github.com/zedwang/waterball/issues",
     "main": "src/index.js",
     "dependencies": {},
     "devDependencies": {

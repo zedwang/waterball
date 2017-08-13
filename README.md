@@ -1,7 +1,7 @@
 # WaterBall
 Light cross-platform Graph,Custom Configuration and animation supported
 ### Demo
-![](/jdfw.gif "Optional title")
+![](/jdfw.gif)
 
 * The component support AMD、CMD and standalone model
 
@@ -63,7 +63,7 @@ $ bower install waterball
 
 ## FAQ
 
-https://github.com/watberball/wiki/FAQ
+https://github.com/zedwang/waterball/issues
 
 ## Supported browsers
 
