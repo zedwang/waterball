@@ -3,23 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        canvas {
+            margin: 10px;
+        }
+    </style>
     <script src="../src/index.js"></script>
 </head>
 <body>
-<div id="container"></div>
+<div>
+    <script id="container0"></script>
+    <script id="container1"></script>
+    <script id="container2"></script>
+</div>
+<div>
+
+</div>
 
 
 <script type="text/javascript">
-    var options = {};
-  var wb = new WaterBall(document.getElementById('container'),options);
-    wb.init();
-    var i = 0;
-    setInterval(function () {
-        i += 5;
-        wb.setValue(i);
-    },1500)
+    new WaterBall('container0',{
+        value:30,
+        r:100,
+        color:'#787878',
+    }).render();
 
+    new WaterBall('container1',{
+        value:50,
+        r:100,
+        borderColor:'#fe9b00',
+        color:'#56ab7c',
+        waveStyle:['#fe9b00','#fed859']
+    }).render();
 
+    new WaterBall('container2',{
+        value:50,
+        r:100,
+        borderColor:'#fe3b00',
+        color:'#56ab7c',
+        waveStyle:['#fe3b00','#fe7768']
+    }).render();
 
 </script>
 </body>

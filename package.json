@@ -1,5 +1,26 @@
 {
   "name": "waterball",
+    "description": "A Canvas Graph library",
   "version": "0.0.1",
-  
+    "keywords": ["canvas", "waterball", "wave"],
+    "author":{
+        "name": "Zed Wang",
+        "email": "343650735@qq.com"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.opensource.org/licenses/mit-license.php"
+        }
+    ],
+    "main": "src/index.js",
+    "dependencies": {},
+    "devDependencies": {
+        "jshint": "^2.5.10",
+        "gulp": "^3.9.0",
+        "gulp-header": "^1.7.1",
+        "gulp-wrap": "^0.13.0",
+        "mocha": "^3.2.0"
+    }
+
 }

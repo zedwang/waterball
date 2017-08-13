@@ -42,31 +42,38 @@ function WaterBall(element, options) {
     this.default = {
         r:100,
         fill:'#fff',
-        stroke:'#2bdc76',
-        strokeWidth:2,
-        value:0 // 0~100
+        waveStyle:['#5bf6a1','#2bdb72'],
+        waveWidth:0.02,//波浪宽度,数越小越宽
+        waveHeight:8,//波浪高度,数越大越高
+        speed:.1,//波浪速度，数越大速度越快
+        borderColor:'#2bdc76',
+        borderWidth:2,
+        value:10, // 0~100
+        color:'#fff',
+        fontSize:'25px microsoft yahei',
+        textAlign:'center',
+
     };
 
     this.timer = null;
     this.oc = null;
-    this.angle = 0;
-    this.waveWidth = 0.015 ;   //波浪宽度,数越小越宽
-    this.waveHeight = 6; //波浪高度,数越大越高
-    this.speed = 0.09; //波浪速度，数越大速度越快
     this.xOffset = 0; //波浪x偏移量
+    this.eAngle = 0; // 水珠摇摆角度
+
 
 }
 
 Object.assign(WaterBall.prototype,{
-    init:function () {
+    render:function () {
         this.opts = Object.assign({},this.default,this.opts);
         this.opts.d = this.opts.r * 2;
         this.maxY = this.opts.d;
+        this.yOffset = this.opts.r;
         this.oc = this._createCanvas();
-        this._update(this.opts.value)
+        this._update(this._ceil(this.opts.value));
+        return this;
     },
     setValue:function (value) {
-        console.log('before',this.maxY)
         this.opts.value = value > 100 ? 100 : value;
         this._update()
     },
@@ -77,6 +84,9 @@ Object.assign(WaterBall.prototype,{
         cancelAnimationFrame(this.timer);
         document.querySelector('body').removeChild(this.elem);
     },
+    _ceil:function (value) {
+      return Math.ceil(value);
+    },
     _reverse: function () {
       return this.opts.d - (this.opts.d  * this.opts.value / 100);
     },
@@ -86,67 +96,87 @@ Object.assign(WaterBall.prototype,{
     _update:function () {
         cancelAnimationFrame(this.timer);
         this.reverse = this._reverse();//百分比对应的数值
-        console.log(this.reverse)
         this._drawArc(this.oc,this.reverse);
     },
 
     _createCanvas: function () {
         var oc = document.createElement('canvas');
-        this.elem.appendChild(oc);
+        var pn = this.elem.parentNode;
+        pn.removeChild(this.elem);
+        pn.appendChild(oc);
+        this.elem = oc;
         return oc;
     },
-    _drawArc:function (oc,value) {
-        if (this.maxY > value)this.maxY--;
+    _createGradient: function(ctx,color){
+        var gradient=ctx.createRadialGradient(75,50,5,90,60,100);
+        if (typeof color == 'string') {
+            gradient.addColorStop(0,color);
+        }
+        if (typeof color == 'object' && color instanceof Array) {
+            var cl = color.length;
+            for (var i = 0; i < cl; i++) {
+                var stop = i * (1 / (cl - 1))
+                gradient.addColorStop(stop,color[i]);
+            }
+        }
 
+        return gradient;
+    },
+    _drawArc:function (oc,value) {
+        this.eAngle ++;
         var ctx = oc.getContext('2d');
         ctx.clearRect(0,0,this.opts.d,this.opts.d);
 
         oc.width = this.opts.d;
         oc.height = this.opts.d;
-        var gradient=ctx.createRadialGradient(75,50,5,90,60,100);
-        gradient.addColorStop("0","#5bf6a1");
-        gradient.addColorStop("1.0","#2bdb72");
         // 外层的球
-        ctx.globalAlpha = .7;
-        ctx.lineWidth = this.opts.strokeWidth;
+        ctx.lineWidth = this.opts.borderWidth;
 
         ctx.beginPath();
-        ctx.strokeStyle = '#2bdc76';
-        ctx.arc(this.opts.r, this.opts.r, this.opts.r - this.opts.strokeWidth, 1.5 * Math.PI, 1.2 * Math.PI);
+        ctx.strokeStyle = this.opts.borderColor;
+        ctx.fillStyle = this._createGradient(ctx,this.opts.fill);
+        ctx.arc(this.opts.r, this.opts.r, this.opts.r - this.opts.borderWidth, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.beginPath();
-        ctx.arc(this.opts.r, this.opts.r, this.opts.r - this.opts.strokeWidth -5, 0, 2 * Math.PI);
+        ctx.arc(this.opts.r, this.opts.r, this.opts.r - this.opts.borderWidth -5, 0, 2 * Math.PI);
+        ctx.fill();
         ctx.clip();
-        var points=[];	//用于存放绘制Sin曲线的点
 
+        // 绘制波浪
+        var points=[];
         ctx.beginPath();
         //在整个轴长上取点
-
-        this.xOffset += this.speed;
-        for (var i = 0; i < 2; i++) {
-            for(var x = 0; x < 0 + this.opts.d; x += 20 / this.opts.d){
-                //此处坐标(x,y)的取点，依靠公式 “振幅高*sin(x*振幅宽 + 振幅偏移量)”
-                var y = -Math.sin((0 + x + i * 5) * this.waveWidth + this.xOffset + i * 15);
-
-                var dY = this.opts.r * (1 - 50 / 100 );
-
-                points.push([x, dY + y * this.waveHeight]);
-                ctx.lineTo(x, dY + y * this.waveHeight);
-            }
-            //封闭路径
-            ctx.lineTo(this.opts.d, this.opts.d);
-            ctx.lineTo(0, this.opts.d);
-            ctx.lineTo(points[0][0],points[0][1]);
-            ctx.fillStyle = gradient;
-            ctx.fill();
+        this.xOffset += this.opts.speed;
+        for(var x = 0; x < 0 + this.opts.d; x += 20 / this.opts.d){
+            //此处坐标(x,y)的取点，依靠公式 “振幅高*sin(x*振幅宽 + 振幅偏移量)”
+            var y = -Math.sin((0 + x) * this.opts.waveWidth + this.xOffset );
+            points.push([x, value + y * this.opts.waveHeight]);
+            ctx.lineTo(x, value + 0 + y * this.opts.waveHeight);
         }
+        //封闭路径
+        ctx.lineTo(this.opts.d, this.opts.d);
+        ctx.lineTo(0, this.opts.d);
+        ctx.lineTo(points[0][0],points[0][1]);
+        ctx.fillStyle = this._createGradient(ctx,this.opts.waveStyle);
+        ctx.fill();
+
+        // 绘制小水珠
+        ctx.beginPath();
+        ctx.strokeStyle = this.opts.fill;
+        ctx.globalAlpha = .3;
+        var y = -Math.sin(this.eAngle * .1 );
+        if (this.maxY < -50) this.maxY = this.opts.d;
+        ctx.arc(this.yOffset + y * 5, this.maxY--, 8, 0, 2 * Math.PI);
+        ctx.stroke();
+
 
 
         // 绘制文本
-        ctx.font="30px Verdana";
-        ctx.fillStyle='#fff';
-        ctx.textAlign = 'center';
-        ctx.fillText(this.opts.value + '%',this.opts.r,this.opts.r);
+        ctx.globalAlpha = 1;
+        ctx.font=this.opts.fontSize;
+        ctx.fillStyle=this.opts.color;
+        ctx.textAlign = this.opts.textAlign;
+        ctx.fillText(this._ceil(this.opts.value) + '%',this.opts.r,this.opts.r);
 
 
 
