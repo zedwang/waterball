@@ -37,7 +37,7 @@ $ bower install waterball
 ```
 
 ## Methods
-### setValue(value)
+### setOptions(key,value)/setOptions(Object)
 * value 0~100
 ### destroy()
 * destroy instance

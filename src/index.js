@@ -75,8 +75,17 @@ Object.assign(WaterBall.prototype,{
         this._update(this._ceil(this.opts.value));
         return this;
     },
-    setValue:function (value) {
-        this.opts.value = value > 100 ? 100 : value;
+    setOptions:function (key,value) {
+        if (typeof key === 'object') {
+            for (var k in key) {
+                this.opts[k] = key[k];
+            }
+        }
+            else
+        {
+            this.opts[key] = value > 100 ? 100 : value;
+        }
+
         this._update()
     },
     getCanvas: function () {
@@ -179,8 +188,6 @@ Object.assign(WaterBall.prototype,{
         ctx.fillStyle=this.opts.color;
         ctx.textAlign = this.opts.textAlign;
         ctx.fillText(this._ceil(this.opts.value) + '%',this.opts.r,this.opts.r);
-
-
 
 
         var self = this;
