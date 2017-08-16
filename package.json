@@ -3,7 +3,7 @@
     "description": "A Canvas Graph library",
     "version": "0.0.1",
     "scripts": {
-        "test": "gulp test",
+        "test": "mocha",
         "package": "gulp build"
     },
     "keywords": [
@@ -25,15 +25,19 @@
     "main": "src/index.js",
     "dependencies": {},
     "devDependencies": {
-        "jshint": "^2.5.10",
+        "del": "^3.0.0",
         "gulp": "^3.9.0",
-        "gulp-header": "^1.7.1",
-        "gulp-wrap": "^0.13.0",
         "gulp-cache": "^0.4.2",
         "gulp-eslint": "^2.0.0",
+        "gulp-header": "^1.7.1",
+        "gulp-if": "^2.0.0",
+        "gulp-load-plugins": "^1.5.0",
+        "gulp-size": "^2.1.0",
         "gulp-sourcemaps": "^1.5.0",
         "gulp-uglify": "^1.1.0",
-        "gulp-if": "^2.0.0",
+        "gulp-umd": "^0.2.1",
+        "gulp-wrap": "^0.13.0",
+        "jshint": "^2.5.10",
         "mocha": "^3.2.0"
     },
     "eslintConfig": {

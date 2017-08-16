@@ -6,17 +6,11 @@ const gulpLoadPlugins = require('gulp-load-plugins');
 const del = require('del');
 const $ = gulpLoadPlugins();
 
-
-
-gulp.task('test',()=> {
-
-})
 function lint(files, options) {
     return gulp.src(files)
-        .pipe(reload({stream: true, once: true}))
         .pipe($.eslint(options))
         .pipe($.eslint.format())
-        .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
+        .pipe($.if('.js',$.eslint.failAfterError()));
 }
 
 gulp.task('lint', () => {
@@ -34,9 +28,16 @@ gulp.task('lint:test', () => {
     })
         .pipe(gulp.dest('test/spec/**/*.js'));
 });
+gulp.task('script',()=>{
+    return gulp.src('src/*.js')
+        .pipe($.umd())
+        .pipe($.uglify())
+
+        .pipe(gulp.dest('dist'))
+})
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('build', ['lint'], () => {
+gulp.task('build', ['lint','script'], () => {
     return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
