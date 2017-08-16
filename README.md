@@ -19,7 +19,7 @@ Light cross-platform Graph,Custom Configuration and animation supported
         color:'#787878',
     });
     // update
-    wb.setValue(50)
+    wb.setOptions({value:50})
 
 ```
 
