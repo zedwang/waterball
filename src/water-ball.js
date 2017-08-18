@@ -62,7 +62,7 @@ function WaterBall(element, options) {
   this.xOffset = 0; //波浪x偏移量
   this.eAngle = 0; // 水珠摇摆角度
 
-  this.render();
+  // this.render();
 
 
 }

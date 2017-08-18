@@ -4,45 +4,92 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        canvas {
-            margin: 10px;
+        * {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
         }
+        .container {
+            width: 800px;
+            margin: 20px auto;
+        }
+        .container-x {
+            width: 1000px;
+            margin: 0px auto;
+        }
+        .canvas {
+            float: left;
+            width: 500px;
+        }
+        .toolbar {
+            padding: 10px;
+            float: right;
+            width: 300px;
+            border-left: 1px solid #ccc;
+        }
+        .toolbar p {
+            margin: 10px 0;
+        }
+        .toolbar p b {
+            margin-right: 15px;
+        }
+        .banner {
+            width: 100%;
+            height: 300px;
+            background: #2766fe;
+            overflow: hidden;
+        }
+        .banner h1 {margin-top: 50px}
+
+
     </style>
-    <script src="../src/index.js"></script>
+    <script src="../src/water-ball.js"></script>
 </head>
 <body>
-<div>
-    <script id="container0"></script>
-    <script id="container1"></script>
-    <script id="container2"></script>
-</div>
-<div>
+<div class="banner">
+    <div class="container-x">
+        <h1>water ball</h1>
+    </div>
 
 </div>
+<div class="container">
+    <div class="canvas">
+        <script id="container0"></script>
+    </div>
 
+    <div class="toolbar">
+            <p><b>value:</b><input type="number" name="value" max="100" min="1" value="30"><span></span></p>
+            <p><b>speed:</b><input type="number" name="speed" max="5" min="0"  step="0.01" value="0.1"></p>
+            <p><b>wave width:</b><input type="number" name="waveWidth" max="5" min="0"  step="0.01" value="0.02"></p>
+            <p><b>wave height:</b><input type="number" name="waveHeight" max="20" min="1" value="8"></p>
+            <p><button type="button" id="sub">确认</button></p>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
 
 <script type="text/javascript">
-    new WaterBall('container0',{
-        value:30,
-        r:100,
-        color:'#787878',
-    });
+    var wb = new WaterBall('container0',{
+            value:50,
+            r:100,
+            borderColor:'#2766fe',
+            color:'#56ab7c',
+            waveStyle:['#6fc0fe','#2766fe']
+        })
+        .render();
 
-    new WaterBall('container1',{
-        value:50,
-        r:100,
-        borderColor:'#fe9b00',
-        color:'#56ab7c',
-        waveStyle:['#fe9b00','#fed859']
-    });
+    $("#sub").bind('click',function () {
+        var options = {}
+        var inps = $('input');
 
-    new WaterBall('container2',{
-        value:50,
-        r:100,
-        borderColor:'#fe3b00',
-        color:'#56ab7c',
-        waveStyle:['#fe3b00','#fe7768']
-    });
+        inps.each(function () {
+            options[this.name] = Number(this.value);
+        })
+
+        wb.setOptions(options);
+    })
 
 </script>
 </body>

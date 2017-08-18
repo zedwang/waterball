@@ -35,9 +35,15 @@ gulp.task('script',()=>{
 
         .pipe(gulp.dest('dist'))
 })
+gulp.task('uglify',()=>{
+    "use strict";
+    return gulp.src('dist/*.js')
+        .pipe($.uglify())
+        .pipe(gulp.dest('dist/water-ball.min.js'))
+})
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('build', ['lint','script'], () => {
+gulp.task('build', ['lint','script','uglify'], () => {
     return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
