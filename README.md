@@ -8,7 +8,7 @@ Light cross-platform Graph,Custom Configuration and animation supported
 #### Install with standalone
 
 ```sh
-<script src='/path/waterball.min.js'></script>
+<script src='/path/water-ball.min.js'></script>
 
 // html
 <div id='container'></div>
