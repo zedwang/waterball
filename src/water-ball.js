@@ -111,6 +111,8 @@ Object.assign(WaterBall.prototype, {
 
   _createCanvas: function () {
     var oc = document.createElement('canvas');
+    oc.setAttribute('width', this.opts.d);
+    oc.setAttribute('height', this.opts.d);
     var pn = this.elem.parentNode;
     pn.removeChild(this.elem);
     pn.appendChild(oc);
@@ -137,8 +139,7 @@ Object.assign(WaterBall.prototype, {
     var ctx = oc.getContext('2d');
     ctx.clearRect(0, 0, this.opts.d, this.opts.d);
 
-    oc.width = this.opts.d;
-    oc.height = this.opts.d;
+
         // 外层的球
     ctx.lineWidth = this.opts.borderWidth;
 

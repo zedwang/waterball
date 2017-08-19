@@ -29,18 +29,25 @@ gulp.task('lint:test', () => {
         .pipe(gulp.dest('test/spec/**/*.js'));
 });
 gulp.task('script',()=>{
-    return gulp.src('src/*.js')
-        .pipe($.umd())
-        .pipe($.uglify())
-
-        .pipe(gulp.dest('dist'))
+    return gulp.src('./src/*.js')
+        .pipe($.umd({
+            namespace:function () {
+                return 'WaterBall';
+            },
+            exports: function (file) {
+                return 'WaterBall';
+            }
+        }))
+        .pipe(gulp.dest('./dist'))
 })
 gulp.task('uglify',()=>{
     "use strict";
-    return gulp.src('dist/*.js')
+    return gulp.src('./src/water-ball.js')
         .pipe($.uglify())
-        .pipe(gulp.dest('dist/water-ball.min.js'))
+        .pipe($.rename('water-ball.min.js'))
+        .pipe(gulp.dest('./dist'))
 })
+
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('build', ['lint','script','uglify'], () => {
