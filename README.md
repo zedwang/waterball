@@ -31,10 +31,6 @@ $ npm install waterball
 
 This will install waterBall NPM packages.
 
-#### Install with Bower
-```sh
-$ bower install waterball
-```
 
 ## Methods
 ### setOptions(key,value)/setOptions(Object)
