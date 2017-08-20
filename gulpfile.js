@@ -17,7 +17,6 @@ gulp.task('lint', () => {
     return lint('src/**/*.js', {
         fix: true
     })
-        .pipe(gulp.dest('src'));
 });
 gulp.task('lint:test', () => {
     return lint('test/spec/**/*.js', {

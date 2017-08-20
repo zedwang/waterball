@@ -30,10 +30,10 @@ if (!Date.now) {
     var vp = vendors[i];
     window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
     window.cancelAnimationFrame = window[vp + 'CancelAnimationFrame']
-        || window[vp + 'CancelRequestAnimationFrame'];
+      || window[vp + 'CancelRequestAnimationFrame'];
   }
   if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) // iOS6 is buggy
-        || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+    || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
     var lastTime = 0;
     window.requestAnimationFrame = function (callback) {
       var now = Date.now();
@@ -62,7 +62,8 @@ function WaterBall(element, options) {
     value: 10, // 0~100
     color: '#fff',
     fontSize: '25px microsoft yahei',
-    textAlign: 'center'
+    textAlign: 'center',
+    ext: '%'
 
   };
 
@@ -103,6 +104,33 @@ Object.assign(WaterBall.prototype, {
     cancelAnimationFrame(this.timer);
     document.querySelector('body').removeChild(this.elem);
   },
+  // 颜色取反
+  _inverse: function (rgb) {
+    var rgbstr = rgb.replace(/(?:rgb\()/, '');
+    rgbstr = rgbstr.replace(/\)/, '');
+    var arr = rgbstr.split(',');
+    for (var i = 0; i < arr.length; i++) {
+      var val = arr[i];
+      arr.splice(i, 1, 255 - val);
+    }
+    return 'rgb(' + arr.toString() + ')';
+  },
+  // hex 转 rgb
+  _HexToRGB: function (hex) {
+    hex = hex.match(/(?:#([a-f0-9]{3,8}))/i);
+    if (hex) {
+      hex = hex[1];
+      if (hex.length === 3) {
+        hex += 'fff';
+      }
+      var rgb = [];
+      for (var i = 0, l = hex.length; i < l; i += 2) {
+        rgb.push(parseInt(hex.substr(i, 2), 16) / (i === 6 ? 255 : 1));
+      }
+      return 'rgb(' + rgb.toString() + ')';
+    }
+    return hex;
+  },
   _ceil: function (value) {
     return Math.ceil(value);
   },
@@ -128,7 +156,7 @@ Object.assign(WaterBall.prototype, {
     this.elem = oc;
     return oc;
   },
-  _createGradient: function (ctx, color){
+  _createGradient: function (ctx, color) {
     var gradient = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
     if (typeof color === 'string') {
       gradient.addColorStop(0, color);
@@ -144,12 +172,12 @@ Object.assign(WaterBall.prototype, {
     return gradient;
   },
   _drawArc: function (oc, value) {
-    this.eAngle ++;
+    this.eAngle++;
     var ctx = oc.getContext('2d');
     ctx.clearRect(0, 0, this.opts.d, this.opts.d);
 
 
-        // 外层的球
+    // 外层的球
     ctx.lineWidth = this.opts.borderWidth;
 
     ctx.beginPath();
@@ -162,25 +190,25 @@ Object.assign(WaterBall.prototype, {
     ctx.fill();
     ctx.clip();
 
-        // 绘制波浪
+    // 绘制波浪
     var points = [];
     ctx.beginPath();
-        //在整个轴长上取点
+    //在整个轴长上取点
     this.xOffset += this.opts.speed;
-    for(var x = 0; x < 0 + this.opts.d; x += 20 / this.opts.d){
-            //此处坐标(x,y)的取点，依靠公式 “振幅高*sin(x*振幅宽 + 振幅偏移量)”
+    for (var x = 0; x < 0 + this.opts.d; x += 20 / this.opts.d) {
+      //此处坐标(x,y)的取点，依靠公式 “振幅高*sin(x*振幅宽 + 振幅偏移量)”
       var y = -Math.sin((0 + x) * this.opts.waveWidth + this.xOffset);
       points.push([x, value + y * this.opts.waveHeight]);
       ctx.lineTo(x, value + 0 + y * this.opts.waveHeight);
     }
-        //封闭路径
+    //封闭路径
     ctx.lineTo(this.opts.d, this.opts.d);
     ctx.lineTo(0, this.opts.d);
     ctx.lineTo(points[0][0], points[0][1]);
     ctx.fillStyle = this._createGradient(ctx, this.opts.waveStyle);
     ctx.fill();
 
-        // 绘制小水珠
+    // 绘制小水珠
     ctx.beginPath();
     ctx.strokeStyle = this.opts.fill;
     ctx.globalAlpha = .3;
@@ -192,20 +220,22 @@ Object.assign(WaterBall.prototype, {
     ctx.stroke();
 
 
-        // 绘制文本
+    // 绘制文本
+    var fColor = this._HexToRGB(this.opts.color);
+    if (this.opts.value > 55) {
+      fColor = this._inverse(fColor);
+    }
     ctx.globalAlpha = 1;
     ctx.font = this.opts.fontSize;
-    ctx.fillStyle = this.opts.color;
+    ctx.fillStyle = fColor;
     ctx.textAlign = this.opts.textAlign;
-    ctx.fillText(this._ceil(this.opts.value) + '%', this.opts.r, this.opts.r);
+    ctx.fillText(this._ceil(this.opts.value) + this.opts.ext, this.opts.r, this.opts.r);
 
 
     var self = this;
-    this.timer = window.requestAnimationFrame(function (){
+    this.timer = window.requestAnimationFrame(function () {
       self._drawArc(self.oc, self.reverse);
     });
-
-
   }
 });
 
