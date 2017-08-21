@@ -84,7 +84,10 @@ Object.assign(WaterBall.prototype, {
         this.opts[k] = key[k];
       }
     } else {
-      this.opts[key] = value > 100 ? 100 : value;
+      if (value > 100) {
+        return;
+      }
+      this.opts[key] = value;
     }
     this._update();
   },
