@@ -144,6 +144,7 @@ Object.assign(WaterBall.prototype, {
     return document.getElementById(id);
   },
   _update: function () {
+    this.eAngle = 0;
     cancelAnimationFrame(this.timer);
     this.reverse = this._reverse();//百分比对应的数值
     this._drawArc(this.oc, this.reverse);
@@ -179,10 +180,9 @@ Object.assign(WaterBall.prototype, {
     var ctx = oc.getContext('2d');
     ctx.clearRect(0, 0, this.opts.d, this.opts.d);
 
-
     // 外层的球
     ctx.lineWidth = this.opts.borderWidth;
-
+    ctx.save();
     ctx.beginPath();
     ctx.strokeStyle = this.opts.borderColor;
     ctx.fillStyle = this._createGradient(ctx, this.opts.fill);
@@ -190,7 +190,7 @@ Object.assign(WaterBall.prototype, {
     ctx.stroke();
     ctx.beginPath();
     ctx.arc(this.opts.r, this.opts.r, this.opts.r - this.opts.borderWidth - 5, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.closePath()
     ctx.clip();
 
     // 绘制波浪
@@ -223,6 +223,7 @@ Object.assign(WaterBall.prototype, {
     ctx.stroke();
 
 
+
     // 绘制文本
     var fColor = this._HexToRGB(this.opts.color);
     if (this.opts.value > 55) {
@@ -233,6 +234,7 @@ Object.assign(WaterBall.prototype, {
     ctx.fillStyle = fColor;
     ctx.textAlign = this.opts.textAlign;
     ctx.fillText(this._ceil(this.opts.value) + this.opts.ext, this.opts.r, this.opts.r);
+    ctx.restore();
 
 
     var self = this;
