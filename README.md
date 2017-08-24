@@ -3,7 +3,7 @@ Light cross-platform Graph,Custom Configuration and animation supported
 ### Demo
 ![](/jdfw.gif)
 
-* The component support AMD、CMD and standalone model
+* The component supported AMD、CMD and standalone model
 
 #### Install with standalone
 
