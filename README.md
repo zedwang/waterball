@@ -1,6 +1,7 @@
 # WaterBall
 Light cross-platform Graph,Custom Configuration and animation supported
 ### Demo
+[https://zedwang.github.io/waterball/demo/index.html](https://zedwang.github.io/waterball/demo/index.html)
 ![](/jdfw.gif)
 
 * The component supported AMD、CMD and standalone model
