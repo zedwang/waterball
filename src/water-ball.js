@@ -94,6 +94,7 @@ Object.assign(WaterBall.prototype, {
   getCanvas: function () {
     return this.oc;
   },
+  // 君要臣死，臣不得不死
   destroy: function () {
     cancelAnimationFrame(this.timer);
     document.querySelector('body').removeChild(this.elem);
