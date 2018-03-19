@@ -1,7 +1,7 @@
 # WaterBall
 Light cross-platform Graph,Custom Configuration and animation supported
 
-[![NPM][npm-icon]][npm-link]
+[![NPM](https://nodei.co/npm/waterball.png?compact=true)](https://nodei.co/npm/waterball/)
 
 
 ### Demo

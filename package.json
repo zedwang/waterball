@@ -12,9 +12,10 @@
         "wave"
     ],
     "author": {
-        "name": "Zed Wang",
-        "email": "343650735@qq.com"
+        "name": "Zed Wong",
+        "email": "woox.wzd@gmail.com"
     },
+    "copyright": "Copyright ZedWong, Inc.",
     "licenses": [
         {
             "type": "MIT",
@@ -22,6 +23,10 @@
         }
     ],
     "issues": "https://github.com/zedwang/waterball/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/zedwang/waterball"
+    },
     "main": "dist/water-ball.js",
     "dependencies": {},
     "devDependencies": {
