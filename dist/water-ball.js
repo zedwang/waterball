@@ -54,27 +54,21 @@ function WaterBall(element, options) {
     r: 100,
     fill: '#fff',
     waveStyle: ['#5bf6a1', '#2bdb72'],
-    waveWidth: 0.02, //波浪宽度,数越小越宽
-    waveHeight: 8, //波浪高度,数越大越高
-    speed: .1, //波浪速度，数越大速度越快
+    waveWidth: 0.02,
+    waveHeight: 8,
+    speed: .1,
     borderColor: '#2bdc76',
     borderWidth: 2,
-    value: 10, // 0~100
+    value: 10,
     color: '#fff',
     fontSize: '25px microsoft yahei',
     textAlign: 'center',
     ext: '%'
-
   };
-
   this.timer = null;
   this.oc = null;
-  this.xOffset = 0; //波浪x偏移量
-  this.eAngle = 0; // 水珠摇摆角度
-
-  // this.render();
-
-
+  this.xOffset = 0;
+  this.eAngle = 0;
 }
 
 Object.assign(WaterBall.prototype, {
@@ -87,6 +81,7 @@ Object.assign(WaterBall.prototype, {
     this._update(this._ceil(this.opts.value));
     return this;
   },
+
   setOptions: function (key, value) {
     if (typeof key === 'object') {
       for (var k in key) {
@@ -100,14 +95,16 @@ Object.assign(WaterBall.prototype, {
     }
     this._update();
   },
+
   getCanvas: function () {
     return this.oc;
   },
+
   destroy: function () {
     cancelAnimationFrame(this.timer);
     document.querySelector('body').removeChild(this.elem);
   },
-  // 颜色取反
+
   _inverse: function (rgb) {
     var rgbstr = rgb.replace(/(?:rgb\()/, '');
     rgbstr = rgbstr.replace(/\)/, '');
@@ -118,7 +115,7 @@ Object.assign(WaterBall.prototype, {
     }
     return 'rgb(' + arr.toString() + ')';
   },
-  // hex 转 rgb
+
   _HexToRGB: function (hex) {
     hex = hex.match(/(?:#([a-f0-9]{3,8}))/i);
     if (hex) {
@@ -134,15 +131,19 @@ Object.assign(WaterBall.prototype, {
     }
     return hex;
   },
+
   _ceil: function (value) {
     return Math.ceil(value);
   },
+  
   _reverse: function () {
     return this.opts.d - this.opts.d * this.opts.value / 100;
   },
+  
   _getElement: function (id) {
     return document.getElementById(id);
   },
+  
   _update: function () {
     this.eAngle = 0;
     cancelAnimationFrame(this.timer);
@@ -160,6 +161,7 @@ Object.assign(WaterBall.prototype, {
     this.elem = oc;
     return oc;
   },
+  
   _createGradient: function (ctx, color) {
     var gradient = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
     if (typeof color === 'string') {
@@ -175,12 +177,12 @@ Object.assign(WaterBall.prototype, {
 
     return gradient;
   },
+  
   _drawArc: function (oc, value) {
     this.eAngle++;
     var ctx = oc.getContext('2d');
     ctx.clearRect(0, 0, this.opts.d, this.opts.d);
-
-    // 外层的球
+    // ball
     ctx.lineWidth = this.opts.borderWidth;
     ctx.save();
     ctx.beginPath();
@@ -193,25 +195,21 @@ Object.assign(WaterBall.prototype, {
     ctx.closePath()
     ctx.clip();
 
-    // 绘制波浪
+    // wave
     var points = [];
     ctx.beginPath();
-    //在整个轴长上取点
     this.xOffset += this.opts.speed;
     for (var x = 0; x < 0 + this.opts.d; x += 20 / this.opts.d) {
-      //此处坐标(x,y)的取点，依靠公式 “振幅高*sin(x*振幅宽 + 振幅偏移量)”
       var y = -Math.sin((0 + x) * this.opts.waveWidth + this.xOffset);
       points.push([x, value + y * this.opts.waveHeight]);
       ctx.lineTo(x, value + 0 + y * this.opts.waveHeight);
     }
-    //封闭路径
     ctx.lineTo(this.opts.d, this.opts.d);
     ctx.lineTo(0, this.opts.d);
     ctx.lineTo(points[0][0], points[0][1]);
     ctx.fillStyle = this._createGradient(ctx, this.opts.waveStyle);
     ctx.fill();
 
-    // 绘制小水珠
     ctx.beginPath();
     ctx.strokeStyle = this.opts.fill;
     ctx.globalAlpha = .3;
@@ -222,9 +220,6 @@ Object.assign(WaterBall.prototype, {
     ctx.arc(this.yOffset + bead * 5, this.maxY--, 8, 0, 2 * Math.PI);
     ctx.stroke();
 
-
-
-    // 绘制文本
     var fColor = this._HexToRGB(this.opts.color);
     if (this.opts.value > 55) {
       fColor = this._inverse(fColor);
@@ -233,9 +228,13 @@ Object.assign(WaterBall.prototype, {
     ctx.font = this.opts.fontSize;
     ctx.fillStyle = fColor;
     ctx.textAlign = this.opts.textAlign;
-    ctx.fillText(this._ceil(this.opts.value) + this.opts.ext, this.opts.r, this.opts.r);
+    if (this.opts.format && typeof this.opts.format === 'function') {
+      var text = this.opts.format(this._ceil(this.opts.value));
+      ctx.fillText(text, this.opts.r, this.opts.r);
+    } else {
+      ctx.fillText(this._ceil(this.opts.value) + this.opts.ext, this.opts.r, this.opts.r);
+    }
     ctx.restore();
-
 
     var self = this;
     this.timer = window.requestAnimationFrame(function () {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>WaterBall demo by zedwang.github.io</title>
     <style>
         * {
             margin:0;
@@ -65,7 +65,7 @@
 
 
     </style>
-    <script src="../dist/water-ball.min.js"></script>
+    <script src="../dist/water-ball.js"></script>
 </head>
 <body>
 <div class="banner">
@@ -99,7 +99,9 @@
             r:120,
             borderColor:'#2766fe',
             color:'#000000',
-						ext: '℃',
+            format: function(value) {
+                return value + 'kg';
+            },
             waveStyle:['#6fc0fe','#2766fe']
         })
         .render();

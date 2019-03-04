@@ -219,7 +219,12 @@ Object.assign(WaterBall.prototype, {
     ctx.font = this.opts.fontSize;
     ctx.fillStyle = fColor;
     ctx.textAlign = this.opts.textAlign;
-    ctx.fillText(this._ceil(this.opts.value) + this.opts.ext, this.opts.r, this.opts.r);
+    if (this.opts.format && typeof this.opts.format === 'function') {
+      var text = this.opts.format(this._ceil(this.opts.value));
+      ctx.fillText(text, this.opts.r, this.opts.r);
+    } else {
+      ctx.fillText(this._ceil(this.opts.value) + this.opts.ext, this.opts.r, this.opts.r);
+    }
     ctx.restore();
 
     var self = this;
