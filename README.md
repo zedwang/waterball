@@ -171,43 +171,27 @@ Light cross-platform Graph,Custom Configuration and animation supported
 
 ![](https://github.com/zedwang/waterball/blob/master/jdfw.gif?raw=true)
 
-  
 
 * The component supported AMD、CMD and standalone model
 
-  
-
 #### Install with standalone
-
-  
-
 ```sh
-
 <script src='/path/water-ball.min.js'></script>
-
-  
-
-// html
-
+```
+```html
 <div id='container'></div>
-
-// js
-
-var wb = new WaterBall('container',{
-
-value:30,
-
-r:100,
-
-color:'#787878',
-
-});
+```
+```js
+var options = {
+	value: 30,
+	r: 100,
+	color: '#787878',
+}
+var container  = document.getElementById('container')
+var wb = new WaterBall(container, options);
 
 // update
-
 wb.setOptions({value:50})
-
-  
 
 ```
 
@@ -246,19 +230,19 @@ This will install waterBall NPM packages.
 
 | Field | Type | Default | description |
 | -- | -- | ----- | ------ | 
-| fill | String/Array | `#fff` | 
-| waveStyle | String/Array | `['#5bf6a1','#2bdb72']`|
-| waveWidth | Float | 0.02 |
-| waveHeight | Int | 8 |
-| speed | Float | .1 |
-| borderColor | String | `#2bdc76` |
-| borderWidth | Int | 2 |
-| value | Float | 0 |
-| color | String | `#fff` |
-| fontSize | String | `25px microsoft yahei` |
-| textAlign | String | center |
-| ext | String | `%` |
-| format | Function | null | `format: function(value) { return value + 'kg'}`|
+| fill | String/Array | `#fff` | |
+| waveStyle | String/Array | `['#5bf6a1','#2bdb72']`||
+| waveWidth | Float | 0.02 ||
+| waveHeight | Int | 8 ||
+| speed | Float | .1 ||
+| borderColor | String | `#2bdc76` ||
+| borderWidth | Int | 2 ||
+| value | Float | 0 ||
+| color | String | `#fff` ||
+| fontSize | String | `25px microsoft yahei` ||
+| textAlign | String | center ||
+| ext | String | `%` ||
+| format | Function | null | `format: function(value) { return value + 'kg'}`||
 
   
   
