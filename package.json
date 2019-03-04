@@ -1,10 +1,11 @@
 {
     "name": "waterball",
     "description": "A Canvas Graph library",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "scripts": {
         "test": "mocha",
-        "package": "gulp build"
+        "min": "gulp min",
+        "package": "gulp"
     },
     "keywords": [
         "canvas",
